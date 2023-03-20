@@ -92,8 +92,7 @@ let addList = () => {
 
 // Today
 
-todayDate.textContent = moment()
-  .format("dddd, MMMM Do, h:mm a");
+todayDate.textContent = moment() .format("dddd, MMMM Do, h:mm a");
 
 // getWeather (API) = showWeather
 let showWeather = (weather, searchQuery) => {
