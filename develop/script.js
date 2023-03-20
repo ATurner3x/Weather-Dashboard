@@ -31,11 +31,62 @@ let getForecast = (city) => {
       .then((response) => {
         response.json()
           .then((data) => {
-            // getForecast => showForecast
+            // getForecast = showForecast
             showForecast(data, city);
-            // DEFINE LAT AND LON VALUES AS VARIABLES
+            //define coordinates as variables
             let lat = data.city.coord.lat;
             let lon = data.city.coord.lon;
           });
       });
   };
+
+  // submit search and store it
+
+// submitQuery = listCity, getWeather, getForecast
+let submitQuery = (event) => {
+    event.preventDefault();
+    let cityEl = cityInput.value.trim();
+    let btn = document.createElement("button"); 
+    btn.className = "searched-list btn";
+    btn.innerHTML = cityEl; // no duplication
+    buttons.appendChild(btn);
+    listCity();
+    if(!citiesList.includes(cityEl) && (cityEl != "")) {
+      citiesList.push(cityEl);
+    };
+    localStorage.setItem("citiesList", JSON.stringify(citiesList));
+    if(cityEl) {
+      getWeather(cityEl);
+      getForecast(cityEl);
+      cityInput.value = "";
+    } else {
+      alert("Enter a city name to get the weather!");
+    }
+  };
+  // Search history
+let listCity = () => {
+    citiesList = JSON.parse(localStorage.getItem("citiesList"));
+    if(!citiesList) {
+      citiesList = [];
+    };
+  };
+
+  // search history button
+let addList = () => {
+    for(var i = 0; i < citiesList.length; i++) {
+      let btn = document.createElement("button");
+      btn.className = "searched-list btn";
+      btn.innerHTML = citiesList[i];
+      buttons.appendChild(btn); 
+    };
+
+      // use history button
+  let listButtons = document.querySelectorAll(".searched-list");
+  for(var i = 0; i < listButtons.length; i++) {
+    listButtons[i].addEventListener("click", (event) => {
+      getWeather(event.target.textContent);
+      getForecast(event.target.textContent);
+    })
+  }
+};
+
